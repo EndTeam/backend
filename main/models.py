@@ -42,7 +42,7 @@ class Product(models.Model):
 
 
 class ProductColor(models.Model):
-    image = models.ImageField('Изображение')
+    image = models.ImageField('Изображение',upload_to='main/static/main/images')
     name = models.TextField('Название', max_length=20)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
