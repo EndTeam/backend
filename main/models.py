@@ -42,10 +42,13 @@ class Product(models.Model):
 
 
 class ProductColor(models.Model):
-    image = models.ImageField('Изображение',upload_to='main/static/main/images')
+    image = models.ImageField('Изображение',upload_to='products')
     name = models.TextField('Название', max_length=20)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        unique_together = [["product", "color"]]
