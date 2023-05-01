@@ -10,10 +10,10 @@ import random
 from django.utils.crypto import get_random_string
 from logo.settings import DATABASE_PATH
 from main.models import Product, ProductColor, Color, Size, Brand, Category
-#from django.db import connection
-#with connection.cursor() as cursor:
-#    cursor.execute("DROP SCHEMA public CASCADE;")
-#    cursor.execute("CREATE SCHEMA public;")
+from django.db import connection
+with connection.cursor() as cursor:
+    cursor.execute("DROP SCHEMA public CASCADE;")
+    cursor.execute("CREATE SCHEMA public;")
 
 def main():
     os.system('python manage.py makemigrations')

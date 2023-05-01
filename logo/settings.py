@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'fe)7$s9-cfyf!wz=tr3h87lg6(8@$qrn6vkcuob!5j%1l&&1e9'
-DATABASE_PATH = 'localhost'
+DATABASE_PATH = 'db'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
