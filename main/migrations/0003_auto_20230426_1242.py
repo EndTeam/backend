@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='color',
             name='color',
-            field=models.IntegerField(default=16777215, max_length=8, verbose_name='код (десятичный)'),
+            field=models.IntegerField(default=16777, max_length=8, verbose_name='код (десятичный)'),
         ),
     ]

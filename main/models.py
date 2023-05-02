@@ -3,7 +3,10 @@ from colorfield.fields import ColorField
 
 # Create your models here.
 
-
+class Category(models.Model):
+    category = models.TextField('категория', max_length=20)
+    def __str__(self):
+        return str(self.category)
 class Size(models.Model):
     size = models.IntegerField('Размер', )
 
@@ -36,7 +39,7 @@ class Product(models.Model):
     description = models.TextField('Описание')
     size = models.ManyToManyField(Size)
     color = models.ManyToManyField(Color, through='ProductColor')
-
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True)
     def __str__(self):
         return self.name
 

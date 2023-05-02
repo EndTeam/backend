@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Product, ProductColor, Size, Color, Brand
+from .models import Product, ProductColor, Size, Color, Brand, Category
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 
 class SizeSerializer(serializers.ModelSerializer):
@@ -32,6 +38,7 @@ class ProductSerializer(serializers.ModelSerializer):
     image_color = ProductColorSerializer(source='productcolor_set', many=True)
     size = SizeSerializer(many=True)
     brand = BrandSerializer()
+    category = CategorySerializer()
     class Meta:
         model = Product
         fields = '__all__'

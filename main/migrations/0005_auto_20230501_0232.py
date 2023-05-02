@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='color',
             name='color',
-            field=models.BigIntegerField(default=4278190080, verbose_name='код (десятичный)'),
+            field=models.BigIntegerField(default=4278190, verbose_name='код (десятичный)'),
         ),
         migrations.DeleteModel(
             name='Image',
