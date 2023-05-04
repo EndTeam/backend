@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+
+from secret_settings import SK, DB_User, DB_Password
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fe)7$s9-cfyf!wz=tr3h87lg6(8@$qrn6vkcuob!5j%1l&&1e9'
+SECRET_KEY = SK
 DATABASE_PATH = 'db'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'USER': DB_User,
+        'PASSWORD': DB_Password,
         'HOST': DATABASE_PATH,
         'PORT': '5432',
     }
