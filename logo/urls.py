@@ -22,6 +22,13 @@ from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'product', ProductViewSet)
+router.register(r'brand', BrandViewSet)
+router.register(r'size', SizeViewSet)
+router.register(r'color', ColorViewSet)
+router.register(r'image', PictureViewSet)
+router.register(r'category', CategoryViewSet)
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
