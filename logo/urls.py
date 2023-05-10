@@ -27,11 +27,14 @@ router.register(r'size', SizeViewSet)
 router.register(r'color', ColorViewSet)
 router.register(r'image', PictureViewSet)
 router.register(r'category', CategoryViewSet)
+router.register(r'user', UserViewSet)
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
-    path('api/v1/', include(router.urls))
+    path('api/v1/', include(router.urls)),
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
+    path('api/v1/register/', RegisterView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

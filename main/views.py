@@ -1,14 +1,16 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework import filters
+from rest_framework import filters, generics
 from main.models import Product, ProductColor, Brand, Size, Color, Category
 from main.pagination import StandardResultsSetPagination
 from main.serializers import ProductSerializer, BrandSerializer, SizeSerializer, ColorSerializer, \
-    ProductColorSerializer, CategorySerializer
+    ProductColorSerializer, CategorySerializer, UserSerializer, RegisterSerializer
 from rest_framework import viewsets
 
 
@@ -37,7 +39,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     search_fields = ['name']
-    filterset_fields = ["brand", "size", 'color', 'category']
+    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale']
     pagination_class = StandardResultsSetPagination
 
 
@@ -64,3 +66,14 @@ class PictureViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
