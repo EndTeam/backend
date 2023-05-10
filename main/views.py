@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import filters
 from main.models import Product, ProductColor, Brand, Size, Color, Category
+from main.pagination import StandardResultsSetPagination
 from main.serializers import ProductSerializer, BrandSerializer, SizeSerializer, ColorSerializer, \
     ProductColorSerializer, CategorySerializer
 from rest_framework import viewsets
@@ -37,6 +38,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     search_fields = ['name']
     filterset_fields = ["brand", "size", 'color', 'category']
+    pagination_class = StandardResultsSetPagination
 
 
 class BrandViewSet(viewsets.ModelViewSet):
