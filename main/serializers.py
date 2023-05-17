@@ -57,7 +57,7 @@ class ProductSerializer(serializers.ModelSerializer):
     size = SizeSerializer(many=True)
     brand = BrandSerializer()
     category = CategorySerializer()
-    is_favorite = serializers.BooleanField()
+    is_favorite = serializers.BooleanField(default=False)
     class Meta:
         model = Product
         fields = ['id', "name", "article", "cost", "sale_cost", "new", "sale", "description", "image_color", "size",

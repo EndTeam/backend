@@ -91,3 +91,17 @@ class FavoriteViewSet(viewsets.ModelViewSet):
     queryset = ProductUser.objects.all()
     serializer_class = FavoriteSerializer
 
+
+class FavoriteProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ['name']
+    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale']
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        user = self.request.user.id
+        if user == None:
+            user = -1
+        return Product.objects.filter(productuser__user=user).annotate(is_favorite=Count(Case(When(productuser__user=user, then=1))))
