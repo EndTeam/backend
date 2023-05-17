@@ -3,7 +3,20 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from .models import Product, ProductColor, Size, Color, Brand, Category
+from .models import Product, ProductColor, Size, Color, Brand, Category, ProductUser
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductUser
+        fields = '__all__'
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -33,6 +46,7 @@ class ColorSerializer(serializers.ModelSerializer):
 class ProductColorSerializer(serializers.ModelSerializer):
     img_name = serializers.ReadOnlyField(source='product.name')
     color = ColorSerializer()
+
     class Meta:
         model = ProductColor
         fields = '__all__'
@@ -43,15 +57,11 @@ class ProductSerializer(serializers.ModelSerializer):
     size = SizeSerializer(many=True)
     brand = BrandSerializer()
     category = CategorySerializer()
+    is_favorite = serializers.BooleanField()
     class Meta:
         model = Product
-        fields = '__all__'
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
+        fields = ['id', "name", "article", "cost", "sale_cost", "new", "sale", "description", "image_color", "size",
+                  "brand", "category", 'is_favorite']
 
 
 class RegisterSerializer(serializers.ModelSerializer):

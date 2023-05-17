@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from colorfield.fields import ColorField
 
@@ -40,6 +41,8 @@ class Product(models.Model):
     size = models.ManyToManyField(Size)
     color = models.ManyToManyField(Color, through='ProductColor')
     category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True)
+    favorite = models.ManyToManyField(User, through='ProductUser')
+
     def __str__(self):
         return self.name
 
@@ -55,3 +58,14 @@ class ProductColor(models.Model):
 
     class Meta:
         unique_together = [["product", "color"]]
+
+
+class ProductUser(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.product) + ' ' + str(self.user)
+
+    class Meta:
+        unique_together = [["product", "user"]]

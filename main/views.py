@@ -1,16 +1,18 @@
 from django.contrib.auth.models import User
+from django.db.models import Exists, Count, Case, When
 from django.shortcuts import render
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.fields import IntegerField
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import filters, generics
-from main.models import Product, ProductColor, Brand, Size, Color, Category
+from main.models import Product, ProductColor, Brand, Size, Color, Category, ProductUser
 from main.pagination import StandardResultsSetPagination
 from main.serializers import ProductSerializer, BrandSerializer, SizeSerializer, ColorSerializer, \
-    ProductColorSerializer, CategorySerializer, UserSerializer, RegisterSerializer
+    ProductColorSerializer, CategorySerializer, UserSerializer, RegisterSerializer, FavoriteSerializer
 from rest_framework import viewsets
 
 
@@ -41,6 +43,12 @@ class ProductViewSet(viewsets.ModelViewSet):
     search_fields = ['name']
     filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale']
     pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        user = self.request.user.id
+        if user == None:
+            user = -1
+        return Product.objects.annotate(is_favorite=Count(Case(When(productuser__user=user, then=1))))
 
 
 class BrandViewSet(viewsets.ModelViewSet):
@@ -77,3 +85,9 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+
+class FavoriteViewSet(viewsets.ModelViewSet):
+    queryset = ProductUser.objects.all()
+    serializer_class = FavoriteSerializer
+
