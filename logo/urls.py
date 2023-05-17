@@ -28,6 +28,8 @@ router.register(r'color', ColorViewSet)
 router.register(r'image', PictureViewSet)
 router.register(r'category', CategoryViewSet)
 router.register(r'user', UserViewSet)
+router.register(r'favorite', FavoriteViewSet)
+router.register(r'user_favorite', FavoriteProductViewSet)
 
 
 
