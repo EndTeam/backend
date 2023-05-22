@@ -3,7 +3,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from .models import Product, ProductColor, Size, Color, Brand, Category, ProductUser
+from .models import Product, ProductColor, Size, Color, Brand, Category, ProductUser, Basket
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,7 +13,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ProductUser
         fields = '__all__'
@@ -58,6 +57,7 @@ class ProductSerializer(serializers.ModelSerializer):
     brand = BrandSerializer()
     category = CategorySerializer()
     is_favorite = serializers.BooleanField(default=False)
+
     class Meta:
         model = Product
         fields = ['id', "name", "article", "cost", "sale_cost", "new", "sale", "description", "image_color", "size",
@@ -99,3 +99,26 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class ProductBasketSerializer(serializers.ModelSerializer):
+    image_color = ProductColorSerializer(source='productcolor_set', many=True)
+    size = SizeSerializer(many=True)
+    brand = BrandSerializer()
+    category = CategorySerializer()
+    is_favorite = serializers.BooleanField(default=False)
+
+    class Meta:
+        model = Product
+        fields = ['id', "name", "article", "cost", "sale_cost", "new", "sale", "description", "image_color", "size",
+                  "brand", "category", 'is_favorite']
+
+
+class BasketSerializer(serializers.ModelSerializer):
+    #product = ProductBasketSerializer()
+    #color = ColorSerializer()
+    #size = SizeSerializer()
+
+    class Meta:
+        model = Basket
+        fields = '__all__'
