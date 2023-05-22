@@ -30,6 +30,8 @@ router.register(r'category', CategoryViewSet)
 router.register(r'user', UserViewSet)
 router.register(r'favorite', FavoriteViewSet)
 router.register(r'user_favorite', FavoriteProductViewSet)
+router.register(r'basket', BasketViewSet)
+router.register(r'my_basket', MyBasketViewSet)
 
 
 
@@ -39,4 +41,5 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('api/v1/drf-auth/', include('rest_framework.urls')),
     path('api/v1/register/', RegisterView.as_view()),
+    path('api/v1/user_check', UserCheckView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,11 +8,11 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework import filters, generics
-from main.models import Product, ProductColor, Brand, Size, Color, Category, ProductUser
+from rest_framework import filters, generics, mixins, permissions
+from main.models import Product, ProductColor, Brand, Size, Color, Category, ProductUser, Basket
 from main.pagination import StandardResultsSetPagination
 from main.serializers import ProductSerializer, BrandSerializer, SizeSerializer, ColorSerializer, \
-    ProductColorSerializer, CategorySerializer, UserSerializer, RegisterSerializer, FavoriteSerializer
+    ProductColorSerializer, CategorySerializer, UserSerializer, RegisterSerializer, FavoriteSerializer, BasketSerializer
 from rest_framework import viewsets
 
 
@@ -104,4 +104,32 @@ class FavoriteProductViewSet(viewsets.ModelViewSet):
         user = self.request.user.id
         if user == None:
             user = -1
-        return Product.objects.filter(productuser__user=user).annotate(is_favorite=Count(Case(When(productuser__user=user, then=1))))
+        return Product.objects.filter(productuser__user=user).annotate(
+            is_favorite=Count(Case(When(productuser__user=user, then=1))))
+
+
+class BasketViewSet(viewsets.ModelViewSet):
+    queryset = Basket.objects.all()
+    serializer_class = BasketSerializer
+
+
+class MyBasketViewSet(viewsets.ModelViewSet):
+    queryset = Basket.objects.all()
+    serializer_class = BasketSerializer
+
+    def get_queryset(self):
+        user = self.request.user.id
+        if user == None:
+            user = -1
+        return Basket.objects.filter(user=user)
+
+
+class UserCheckView(APIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    def get(self, request):
+        user = self.request.user.id
+        if user == None:
+            user = -1
+        serializer = UserSerializer(User.objects.filter(id=user), many=True)
+        return Response(serializer.data)
