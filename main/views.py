@@ -160,9 +160,6 @@ class OrderViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], name='create_order')
     def create_order(self, request, *args, **kwargs):
         user = self.request.user
-        print(request.GET[
-                  'adress'] == '')  # 127.0.0.1:8000/api/v1/order/create_order/?adress=value1&comment=value1&comment=value1
-        print(request.GET['comment'] == '')
         if user.id == None:
             queryset = Basket.objects.filter(user=user.id)
             serializer = OrderSerializer(queryset, many=True)
@@ -172,11 +169,11 @@ class OrderViewSet(viewsets.ModelViewSet):
             queryset = Basket.objects.filter(user=user.id)
             serializer = BasketSerializer(queryset, many=True)
             return Response(serializer.data)
-        if request.GET['adress'] == '':
+        if request.GET['address'] == '':
             new_order = Order.objects.create(user=user, email=user.email, comment=request.GET['comment'])
         else:
             new_order = Order.objects.create(user=user, email=user.email, comment=request.GET['comment'],
-                                             address=request.GET['adress'], way_to_get='доставка')
+                                             address=request.GET['address'], way_to_get='доставка')
         sum = 0
         sale = 0
         count = 0
