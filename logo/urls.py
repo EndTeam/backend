@@ -30,8 +30,10 @@ router.register(r'category', CategoryViewSet)
 router.register(r'user', UserViewSet)
 router.register(r'favorite', FavoriteViewSet)
 router.register(r'user_favorite', FavoriteProductViewSet)
-router.register(r'basket', BasketViewSet)
 router.register(r'my_basket', MyBasketViewSet)
+router.register(r'basket', BasketViewSet)
+router.register(r'order', OrderViewSet)
+router.register(r'order_piece', OrderPieceViewSet)
 
 
 

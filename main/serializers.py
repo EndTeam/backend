@@ -3,7 +3,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from .models import Product, ProductColor, Size, Color, Brand, Category, ProductUser, Basket
+from .models import Product, ProductColor, Size, Color, Brand, Category, ProductUser, Basket, Order, OrderPiece
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -121,4 +121,24 @@ class BasketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Basket
+        fields = '__all__'
+
+
+class OrderPieceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderPiece
+        fields = '__all__'
+
+
+class OrderPieceTestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderPiece
+        fields = ['id']
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    order_piece = OrderPieceSerializer(many=True, source='orderpiece_set')
+
+    class Meta:
+        model = Order
         fields = '__all__'
