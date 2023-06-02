@@ -143,3 +143,12 @@ class OrderPiece(models.Model):
 
     class Meta:
         unique_together = [["product", "order", "color", "size"]]
+
+
+class Contact(models.Model):
+    name = models.TextField(max_length=30)
+    data = models.TextField(max_length=30)
+    image = models.ImageField('Изображение', upload_to='contacts_and_media', null=True)
+
+    def __str__(self):
+        return str(self.name)

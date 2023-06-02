@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 from .models import Product, ProductColor, Size, Color, Brand, Category, ProductUser, Basket, Order, OrderPiece, \
-    MainCategory
+    MainCategory, Contact
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -158,4 +158,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
+        fields = '__all__'
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
         fields = '__all__'

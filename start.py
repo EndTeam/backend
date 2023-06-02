@@ -9,7 +9,7 @@ django.setup()
 import random
 from django.utils.crypto import get_random_string
 from logo.settings import DATABASE_PATH
-from main.models import Product, ProductColor, Color, Size, Brand, Category, MainCategory
+from main.models import Product, ProductColor, Color, Size, Brand, Category, MainCategory, Contact
 from django.db import connection
 
 with connection.cursor() as cursor:
@@ -28,7 +28,7 @@ def main():
     Brand.objects.all().delete()
     MainCategory.objects.all().delete()
     for i in range(3):
-        name = ['остальное','одежда', "аксессуары"]
+        name = ['остальное', 'одежда', "аксессуары"]
         main_category = MainCategory(main_category=name[i])
         main_category.save()
     for i in range(10):
@@ -91,6 +91,15 @@ def main():
         pc = ProductColor(image='products/seed/' + str(i + 3) + '.png', name="изображение" + str(i) + str(i),
                           product=product[i + 1], color=color[random.randrange(2, 4)])
         pc.save()
+
+    for i in range(7):
+        name = ['телефон', 'email', "telegram", "instagram", "vk", "youtube", "whatsapp"]
+        data = ['+7(900)900-90-90', "admin@admin.admin"]
+        if i < 2:
+            contact = Contact(name=name[i], data=data[i])
+        else:
+            contact = Contact(name=name[i], data=name[i], image='contacts_and_media/mono/' + name[i] + '.png')
+        contact.save()
 
 
 if __name__ == '__main__':
