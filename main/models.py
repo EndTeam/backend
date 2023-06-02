@@ -5,9 +5,16 @@ from django.utils import timezone
 
 
 # Create your models here.
+class MainCategory(models.Model):
+    main_category = models.TextField('основная_категория', max_length=20)
+
+    def __str__(self):
+        return str(self.main_category)
+
 
 class Category(models.Model):
     category = models.TextField('категория', max_length=20)
+    main_category= models.ForeignKey(MainCategory,related_name="category", on_delete=models.DO_NOTHING, null=True, default=1)
 
     def __str__(self):
         return str(self.category)

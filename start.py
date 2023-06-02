@@ -9,11 +9,13 @@ django.setup()
 import random
 from django.utils.crypto import get_random_string
 from logo.settings import DATABASE_PATH
-from main.models import Product, ProductColor, Color, Size, Brand, Category
+from main.models import Product, ProductColor, Color, Size, Brand, Category, MainCategory
 from django.db import connection
+
 with connection.cursor() as cursor:
     cursor.execute("DROP SCHEMA public CASCADE;")
     cursor.execute("CREATE SCHEMA public;")
+
 
 def main():
     os.system('python manage.py makemigrations')
@@ -24,12 +26,25 @@ def main():
     Category.objects.all().delete()
     Size.objects.all().delete()
     Brand.objects.all().delete()
+    MainCategory.objects.all().delete()
+    for i in range(3):
+        name = ['остальное','одежда', "аксессуары"]
+        main_category = MainCategory(main_category=name[i])
+        main_category.save()
     for i in range(10):
         size = Size(size=i * 5 + 45)
         size.save()
     for i in range(4):
         name = ['штаны', "куртки", "ботинки", "шляпы"]
-        category = Category(category=name[i])
+        main_category = MainCategory.objects.all()
+
+        if i == 0 or i == 1:
+            category = Category(category=name[i], main_category=main_category[1])
+        elif i == 3:
+            category = Category(category=name[i], main_category=main_category[2])
+        else:
+            category = Category(category=name[i])
+
         category.save()
     for i in range(5):
         name = ['красный', "черный", "синий", "желтый", "зеленый"]
@@ -66,15 +81,15 @@ def main():
             product.article = ('шляпа' + str(i))
             product.category = (category[3])
         product.color.add(color[random.randrange(0, 2)], through_defaults={'name': "изображение" + str(i),
-                                                               'image': 'products/seed/' + str(
+                                                                           'image': 'products/seed/' + str(
                                                                                i + 1) + '.png'})
         product.size.add(size[random.randrange(1, 9)])
         product.save()
 
     product = Product.objects.all()
     for i in range(99):
-        pc = ProductColor(image='products/seed/' + str(i + 3) + '.png', name="изображение" + str(i)+ str(i),
-                          product=product[i+1], color=color[random.randrange(2, 4)])
+        pc = ProductColor(image='products/seed/' + str(i + 3) + '.png', name="изображение" + str(i) + str(i),
+                          product=product[i + 1], color=color[random.randrange(2, 4)])
         pc.save()
 
 
