@@ -35,6 +35,7 @@ router.register(r'basket', BasketViewSet)
 router.register(r'order', OrderViewSet)
 router.register(r'order_piece', OrderPieceViewSet)
 router.register(r'main_category', MainCategoryViewSet)
+router.register(r'contact', ContactViewSet)
 
 
 

@@ -13,11 +13,11 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import filters, generics, mixins, permissions
 from main.models import Product, ProductColor, Brand, Size, Color, Category, ProductUser, Basket, Order, OrderPiece, \
-    MainCategory
+    MainCategory, Contact
 from main.pagination import StandardResultsSetPagination
 from main.serializers import ProductSerializer, BrandSerializer, SizeSerializer, ColorSerializer, \
     ProductColorSerializer, CategorySerializer, UserSerializer, RegisterSerializer, FavoriteSerializer, \
-    BasketSerializer, OrderSerializer, OrderPieceSerializer, MainCategorySerializer
+    BasketSerializer, OrderSerializer, OrderPieceSerializer, MainCategorySerializer, ContactSerializer
 from rest_framework import viewsets
 
 
@@ -209,3 +209,8 @@ class OrderPieceViewSet(viewsets.ModelViewSet):
 class MainCategoryViewSet(viewsets.ModelViewSet):
     queryset = MainCategory.objects.all()
     serializer_class = MainCategorySerializer
+
+
+class ContactViewSet(viewsets.ModelViewSet):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
