@@ -72,6 +72,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+    pagination_class = None
 
 
 class SizeViewSet(viewsets.ModelViewSet):
@@ -83,16 +84,19 @@ class SizeViewSet(viewsets.ModelViewSet):
 class ColorViewSet(viewsets.ModelViewSet):
     queryset = Color.objects.all()
     serializer_class = ColorSerializer
+    pagination_class = None
 
 
 class PictureViewSet(viewsets.ModelViewSet):
     queryset = ProductColor.objects.all()
     serializer_class = ProductColorSerializer
+    pagination_class = None
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    pagination_class = None
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -104,6 +108,7 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+    pagination_class = None
 
 
 class FavoriteViewSet(viewsets.ModelViewSet):
@@ -211,8 +216,10 @@ class OrderPieceViewSet(viewsets.ModelViewSet):
 class MainCategoryViewSet(viewsets.ModelViewSet):
     queryset = MainCategory.objects.all()
     serializer_class = MainCategorySerializer
+    pagination_class = None
 
 
 class ContactViewSet(viewsets.ModelViewSet):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
+    pagination_class = None
