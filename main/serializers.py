@@ -35,7 +35,6 @@ class MainCategorySerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    main_category = MainCategorySerializer()
 
     class Meta:
         model = Category
