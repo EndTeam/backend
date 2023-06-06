@@ -21,7 +21,7 @@ class Category(models.Model):
 
 
 class Size(models.Model):
-    size = models.IntegerField('Размер', )
+    size = models.CharField('Размер', max_length=8)
 
     def __str__(self):
         return str(self.size)

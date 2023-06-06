@@ -77,6 +77,7 @@ class BrandViewSet(viewsets.ModelViewSet):
 class SizeViewSet(viewsets.ModelViewSet):
     queryset = Size.objects.all()
     serializer_class = SizeSerializer
+    pagination_class = None
 
 
 class ColorViewSet(viewsets.ModelViewSet):
@@ -145,6 +146,7 @@ class MyBasketViewSet(viewsets.ModelViewSet):
 class UserCheckView(APIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    pagination_class = None
 
     def get(self, request):
         user = self.request.user.id
