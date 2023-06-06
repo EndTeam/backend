@@ -46,7 +46,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     search_fields = ['name']
-    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale']
+    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale','category__main_category']
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
@@ -121,7 +121,7 @@ class FavoriteProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     search_fields = ['name']
-    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale']
+    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale','category__main_category']
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
