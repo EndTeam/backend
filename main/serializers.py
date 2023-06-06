@@ -10,7 +10,8 @@ from .models import Product, ProductColor, Size, Color, Brand, Category, Product
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ["id", "last_login", "is_superuser", "username", "first_name", "last_name", "email", "is_staff",
+                  "is_active", "date_joined", "groups", "user_permissions"]
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
@@ -26,7 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class MainCategorySerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True,many=True)
+    category = CategorySerializer(read_only=True, many=True)
 
     class Meta:
         model = MainCategory
