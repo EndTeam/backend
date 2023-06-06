@@ -1,14 +1,10 @@
 import os
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'logo.settings')
-
 import django
-
+os.environ["DJANGO_SETTINGS_MODULE"] = "logo.settings"
 django.setup()
-
+from django.contrib.auth.models import User
 import random
 from django.utils.crypto import get_random_string
-from logo.settings import DATABASE_PATH
 from main.models import Product, ProductColor, Color, Size, Brand, Category, MainCategory, Contact
 from django.db import connection
 
@@ -101,6 +97,12 @@ def main():
         else:
             contact = Contact(name=name[i], data=name[i], image='contacts_and_media/mono/' + name[i] + '.png')
         contact.save()
+    user = User.objects.create(username='root', email='root@root.root', first_name='root', last_name='root')
+    user.set_password('root')
+    user.save()
+    user = User.objects.create(username='admin', email='admin@admin.admin', first_name='admin', last_name='admin', is_superuser=True, is_staff=True)
+    user.set_password('admin')
+    user.save()
 
 
 if __name__ == '__main__':
