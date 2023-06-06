@@ -31,8 +31,9 @@ def main():
         name = ['остальное', 'одежда', "аксессуары"]
         main_category = MainCategory(main_category=name[i])
         main_category.save()
-    for i in range(10):
-        size = Size(size=i * 5 + 45)
+    sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+    for i in range(7):
+        size = Size(size=sizes[i])
         size.save()
     for i in range(4):
         name = ['штаны', "куртки", "ботинки", "шляпы"]
@@ -83,7 +84,7 @@ def main():
         product.color.add(color[random.randrange(0, 2)], through_defaults={'name': "изображение" + str(i),
                                                                            'image': 'products/seed/' + str(
                                                                                i + 1) + '.png'})
-        product.size.add(size[random.randrange(1, 9)])
+        product.size.add(size[random.randrange(1, 7)])
         product.save()
 
     product = Product.objects.all()
