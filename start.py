@@ -25,7 +25,7 @@ def main():
     MainCategory.objects.all().delete()
     for i in range(3):
         name = ['остальное', 'одежда', "аксессуары"]
-        main_category = MainCategory(main_category=name[i])
+        main_category = MainCategory(main_category=name[i], image='contacts_and_media/' + name[i] + '.png')
         main_category.save()
     sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
     for i in range(7):
