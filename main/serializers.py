@@ -31,7 +31,7 @@ class MainCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MainCategory
-        fields = ['id', 'main_category', 'category']
+        fields = ['id', 'main_category', 'category','image']
 
 
 class CategorySerializer(serializers.ModelSerializer):

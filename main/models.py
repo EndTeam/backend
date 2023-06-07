@@ -7,6 +7,7 @@ from django.utils import timezone
 # Create your models here.
 class MainCategory(models.Model):
     main_category = models.TextField('основная_категория', max_length=20)
+    image = models.ImageField('Изображение', upload_to='contacts_and_media', null=True)
 
     def __str__(self):
         return str(self.main_category)
