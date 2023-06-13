@@ -36,6 +36,7 @@ router.register(r'order', OrderViewSet)
 router.register(r'order_piece', OrderPieceViewSet)
 router.register(r'main_category', MainCategoryViewSet)
 router.register(r'contact', ContactViewSet)
+router.register(r'auth', LoginView)
 
 
 
@@ -46,4 +47,5 @@ urlpatterns = [
     path('api/v1/drf-auth/', include('rest_framework.urls')),
     path('api/v1/register/', RegisterView.as_view()),
     path('api/v1/user_check', UserCheckView.as_view()),
+    #path('api/v1/login/', LoginView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.db.models import Exists, Count, Case, When
 from django.shortcuts import render
@@ -11,13 +12,13 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework import filters, generics, mixins, permissions
+from rest_framework import filters, generics, mixins, permissions, status
 from main.models import Product, ProductColor, Brand, Size, Color, Category, ProductUser, Basket, Order, OrderPiece, \
     MainCategory, Contact
 from main.pagination import StandardResultsSetPagination
 from main.serializers import ProductSerializer, BrandSerializer, SizeSerializer, ColorSerializer, \
     ProductColorSerializer, CategorySerializer, UserSerializer, RegisterSerializer, FavoriteSerializer, \
-    BasketSerializer, OrderSerializer, OrderPieceSerializer, MainCategorySerializer, ContactSerializer
+    BasketSerializer, OrderSerializer, OrderPieceSerializer, MainCategorySerializer, ContactSerializer, LoginSerializer
 from rest_framework import viewsets
 
 
@@ -46,7 +47,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     search_fields = ['name']
-    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale','category__main_category']
+    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale', 'category__main_category']
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
@@ -63,10 +64,10 @@ class ProductViewSet(viewsets.ModelViewSet):
         basket = Basket.objects.filter(user=user, product=request.GET['product'])
         if basket.first() == None:
             return Response(False)
-        if basket[0].size.id == int(request.GET['size']) and basket[0].product.id == int(request.GET['product']) and basket[0].color.id == int(request.GET['color']):
+        if basket[0].size.id == int(request.GET['size']) and basket[0].product.id == int(request.GET['product']) and \
+                basket[0].color.id == int(request.GET['color']):
             return Response(True)
         return Response(False)
-
 
 
 class BrandViewSet(viewsets.ModelViewSet):
@@ -121,7 +122,7 @@ class FavoriteProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     search_fields = ['name']
-    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale','category__main_category']
+    filterset_fields = ["brand", "size", 'color', 'category', 'new', 'sale', 'category__main_category']
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
@@ -187,9 +188,9 @@ class OrderViewSet(viewsets.ModelViewSet):
         count = 0
         for i in user_basket:
             OrderPiece.objects.create(order=new_order, product=i.product, size=i.size, color=i.color, count=i.count)
-            sum += i.product.cost*i.count
+            sum += i.product.cost * i.count
             if i.product.sale == True:
-                sale += (i.product.cost - i.product.sale_cost)*i.count
+                sale += (i.product.cost - i.product.sale_cost) * i.count
             count += i.count
         if new_order.order_piece.first() == None:
             new_order.delete()
@@ -198,10 +199,10 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         for i in user_basket:
             i.delete()
-        new_order.count=count
-        new_order.summ=sum
-        new_order.sale=sale
-        new_order.sale_summ=sum - sale
+        new_order.count = count
+        new_order.summ = sum
+        new_order.sale = sale
+        new_order.sale_summ = sum - sale
         new_order.save()
 
         serializer = OrderSerializer(Order.objects.filter(user=user), many=True)
@@ -223,3 +224,25 @@ class ContactViewSet(viewsets.ModelViewSet):
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
     pagination_class = None
+
+
+from rest_framework import permissions
+from rest_framework import views
+from rest_framework.response import Response
+
+
+class LoginView(viewsets.ModelViewSet):
+    # This view should be accessible also for unauthenticated users.
+    permission_classes = (permissions.AllowAny,)
+    queryset = User.objects.all()
+    serializer_class = LoginSerializer
+    pagination_class = None
+    @action(detail=False, methods=['post'], name='login')
+
+    def login(self, request, format=None):
+        serializer = LoginSerializer(data=self.request.data,
+                                                 context={'request': self.request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        return Response(None, status=status.HTTP_202_ACCEPTED)
